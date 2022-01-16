@@ -3,33 +3,33 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-Future<Album> fetchAlbom() async {
+Future<Post> fetchAlbom() async {
   final response=await http
       .get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
 
   if (response.statusCode==200) {
-    return Album.fromJson(jsonDecode(response.body
+    return Post.fromJson(jsonDecode(response.body
     ));
   } else {
     throw Exception('Failed to load album');
   }
 }
 
-class Album {
+class Post {
   final int userid;
   final int id;
   final String title;
   final String body;
 
-  Album({
+  Post({
     required this.userid,
     required this.id,
     required this.title,
     required this.body,
   });
 
-  factory Album.fromJson(Map<String, dynamic> json){
-    return Album(
+  factory Post.fromJson(Map<String, dynamic> json){
+    return Post(
       userid: json['userId'],
       id: json['id'],
       title: json['title'],
@@ -46,7 +46,7 @@ class NetworkingScreen extends StatefulWidget{
 }
 
 class _NetworkingScreenState extends State<NetworkingScreen>{
-  late Future<Album> futureAlbum;
+  late Future<Post> futureAlbum;
 
   @override
   void initState(){
@@ -69,7 +69,7 @@ class _NetworkingScreenState extends State<NetworkingScreen>{
             SizedBox(height: 100.0,),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: FutureBuilder<Album>(
+              child: FutureBuilder<Post>(
               future: futureAlbum,
               builder: (context, snapshot){
                 if (snapshot.hasData){
@@ -86,7 +86,7 @@ class _NetworkingScreenState extends State<NetworkingScreen>{
           ),
             ),
           SizedBox(height: 100.0,),
-        FutureBuilder<Album>(
+        FutureBuilder<Post>(
           future: futureAlbum,
           builder: (context, snapshot){
             if (snapshot.hasData){
